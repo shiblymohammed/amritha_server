@@ -33,7 +33,7 @@ CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOWED_ORIGINS = config(
     'CORS_ALLOWED_ORIGINS', 
     default='http://localhost:5173,http://127.0.0.1:5173,http://localhost:5174,http://127.0.0.1:5174',
-    cast=lambda v: [s.strip() for s in v.split(',')]
+    cast=lambda v: [s.strip().rstrip('/') for s in v.split(',')]
 )
 
 # Additional CORS settings for production
