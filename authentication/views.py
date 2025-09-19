@@ -178,6 +178,7 @@ def check_auth_status(request):
     is_admin = user.is_staff or user.is_superuser or getattr(user, 'is_admin', False)
     
     return Response({
+        'success': True,
         'authenticated': True,
         'is_admin': is_admin,
         'user': UserSerializer(user).data
