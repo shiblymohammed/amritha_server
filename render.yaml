@@ -1,0 +1,28 @@
+services:
+  - type: web
+    name: heritage-hotel-backend
+    env: python
+    region: oregon
+    plan: free
+    buildCommand: "./build.sh"
+    startCommand: "gunicorn core.wsgi:application"
+    envVars:
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DEBUG
+        value: "False"
+      - key: ALLOWED_HOSTS
+        value: "heritage-hotel-backend.onrender.com"
+      - key: CORS_ALLOW_ALL_ORIGINS
+        value: "False"
+      - key: USE_SQLITE
+        value: "False"
+      - key: DATABASE_URL
+        value: "postgresql://heritage_hotel_user:tGMjr6Zp5sLaoARA02slmjIuSIHUXj3J@dpg-d36cpj1r0fns73abvv30-a/heritage_hotel"
+
+databases:
+  - name: heritage-hotel-db
+    databaseName: heritage_hotel
+    user: postgres
+    region: oregon
+    plan: free
