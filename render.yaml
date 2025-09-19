@@ -1,7 +1,7 @@
 # Fixed start command configuration - 2025-01-19 14:30 UTC
 services:
   - type: web
-    name: heritage-hotel-backend
+    name: heritage-hotel-backend-v2
     env: python
     region: oregon
     plan: free

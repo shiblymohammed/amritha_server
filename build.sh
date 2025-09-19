@@ -39,6 +39,17 @@ except ImportError as e:
 echo "Collecting static files..."
 python manage.py collectstatic --no-input
 
+echo "=== Verifying WSGI module ==="
+python -c "import core.wsgi; print('✓ core.wsgi module found')"
+
+echo "=== Checking Procfile ==="
+if [ -f "Procfile" ]; then
+    echo "✓ Procfile found:"
+    cat Procfile
+else
+    echo "⚠ Procfile not found"
+fi
+
 # Run migrations
-echo "Running migrations..."
+echo "=== Running migrations ==="
 python manage.py migrate
