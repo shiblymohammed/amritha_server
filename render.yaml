@@ -1,12 +1,13 @@
 # Fixed start command configuration - 2025-01-19 14:30 UTC
 services:
   - type: web
-    name: heritage-hotel-backend-v2
+    name: heritage-hotel-backend-v3
     env: python
     region: oregon
     plan: free
     pythonVersion: "3.11"
     buildCommand: "./build.sh"
+    startCommand: "gunicorn core.wsgi:application --host 0.0.0.0 --port $PORT"
 
     envVars:
       - key: SECRET_KEY
