@@ -6,7 +6,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = config('SECRET_KEY', default='django-insecure-inh2wifr#+t#37!#7gp7%wwtapcb7%=@csyhojbq-h%83k#ojq')
 DEBUG = config('DEBUG', default=True, cast=bool)
 
-ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='localhost,127.0.0.1', cast=lambda v: [s.strip() for s in v.split(',')])
+ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='localhost,127.0.0.1,*.vercel.app,*.render.com', cast=lambda v: [s.strip() for s in v.split(',')])
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -26,7 +26,7 @@ INSTALLED_APPS = [
 
 
 # CORS settings
-CORS_ALLOW_ALL_ORIGINS = config('CORS_ALLOW_ALL_ORIGINS', default=True, cast=bool)  # For development only
+CORS_ALLOW_ALL_ORIGINS = config('CORS_ALLOW_ALL_ORIGINS', default=False, cast=bool)  # Set to False for production
 CORS_ALLOW_CREDENTIALS = True
 
 # Specific allowed origins for production
@@ -35,6 +35,12 @@ CORS_ALLOWED_ORIGINS = config(
     default='http://localhost:5173,http://127.0.0.1:5173,http://localhost:5174,http://127.0.0.1:5174',
     cast=lambda v: [s.strip() for s in v.split(',')]
 )
+
+# Additional CORS settings for production
+CORS_ALLOWED_ORIGIN_REGEXES = [
+    r"^https://.*\.vercel\.app$",  # Allow all Vercel subdomains
+    r"^https://.*\.vercel\.com$",  # Allow Vercel custom domains
+]
 
 # Allow all headers and methods for development
 CORS_ALLOW_HEADERS = [

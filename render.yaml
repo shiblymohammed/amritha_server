@@ -4,6 +4,7 @@ services:
     env: python
     region: oregon
     plan: free
+    pythonVersion: "3.11"
     buildCommand: "./build.sh"
     startCommand: "gunicorn core.wsgi:application"
     envVars:
@@ -12,13 +13,34 @@ services:
       - key: DEBUG
         value: "False"
       - key: ALLOWED_HOSTS
-        value: "heritage-hotel-backend.onrender.com"
+        value: "amritha-server.onrender.com,localhost,127.0.0.1"
       - key: CORS_ALLOW_ALL_ORIGINS
         value: "False"
+      - key: CORS_ALLOWED_ORIGINS
+        value: "https://amritha-heritage-client.vercel.app,https://amritha-admin-dashboard.vercel.app"
+        # TODO: Update with actual Vercel URLs after deployment
       - key: USE_SQLITE
         value: "False"
       - key: DATABASE_URL
-        value: "postgresql://heritage_hotel_user:tGMjr6Zp5sLaoARA02slmjIuSIHUXj3J@dpg-d36cpj1r0fns73abvv30-a/heritage_hotel"
+        fromDatabase:
+          name: heritage-hotel-db
+          property: connectionString
+        # Alternative: Use manual DATABASE_URL from Render environment variables
+        # value: "postgresql://username:password@hostname:port/database"
+      - key: CLOUDINARY_CLOUD_NAME
+        value: "dgq340o8w"
+      - key: CLOUDINARY_API_KEY
+        value: "382429313389872"
+      - key: CLOUDINARY_API_SECRET
+        value: "mu5cwV8tqFAnp24XHWgn5J1p0D8"
+      - key: EMAIL_HOST_USER
+        value: "your-actual-email@gmail.com"
+      - key: EMAIL_HOST_PASSWORD
+        value: "your-16-character-app-password"
+      - key: DEFAULT_FROM_EMAIL
+        value: "Heritage Hotel <your-actual-email@gmail.com>"
+      - key: ADMIN_EMAIL
+        value: "your-actual-email@gmail.com"
 
 databases:
   - name: heritage-hotel-db
