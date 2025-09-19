@@ -8,7 +8,7 @@ from django.utils import timezone
 from datetime import datetime, timedelta
 from rest_framework import status
 from rest_framework.decorators import api_view, permission_classes
-from rest_framework.permissions import AllowAny
+from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from .models import RoomBooking
 from .serializers import RoomBookingSerializer
@@ -22,8 +22,15 @@ logger = logging.getLogger(__name__)
 def room_bookings_view(request):
     """
     Handle both GET (list bookings) and POST (create booking) requests
+    GET requires authentication (admin only), POST is public (customer booking)
     """
     if request.method == 'GET':
+        # Admin only - require authentication
+        if not request.user.is_authenticated:
+            return Response(
+                {'error': 'Authentication required to view bookings'}, 
+                status=status.HTTP_401_UNAUTHORIZED
+            )
         # Handle listing bookings with optional filters
         try:
             bookings = RoomBooking.objects.all()
@@ -165,7 +172,7 @@ def send_booking_confirmation_email(booking):
 
 
 @api_view(['GET'])
-@permission_classes([AllowAny])
+@permission_classes([IsAuthenticated])
 def get_booking_stats(request):
     """
     Get booking statistics for the dashboard
@@ -240,7 +247,7 @@ def get_booking_stats(request):
 
 
 @api_view(['PUT'])
-@permission_classes([AllowAny])
+@permission_classes([IsAuthenticated])
 def update_booking_status(request, booking_id):
     """
     Update booking status
@@ -278,7 +285,7 @@ def update_booking_status(request, booking_id):
 
 
 @api_view(['DELETE'])
-@permission_classes([AllowAny])
+@permission_classes([IsAuthenticated])
 def delete_booking(request, booking_id):
     """
     Delete a booking
@@ -306,7 +313,7 @@ def delete_booking(request, booking_id):
 
 
 @api_view(['GET'])
-@permission_classes([AllowAny])
+@permission_classes([IsAuthenticated])
 def get_recent_bookings(request):
     """
     Get recent bookings for notifications
